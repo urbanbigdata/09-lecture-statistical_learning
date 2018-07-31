@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>09-lecture-statistical_learning</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+		
+		<!-- Include buttons for opening and closing the notes canvas or the chalkboard -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+			
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-image="images/astemir-almov-265122-unsplash.jpg" data-state="dimbg_dark">
+				<!-- Front page -->
+					<h1>Urban Big Data Analytics</h1>
+					
+					<i>Class 9</i><br>
+					<i>Statistical Learning</i><br><br>
+					
+					<p>
+					<small> July 31, 2018<br><br>
+					
+					Instructor: <a href="http://andyhong.org" target="_blank">Andy Hong</a>, <i>PhD</i><br>
+					
+					Postdoctoral Research and Teaching Fellow<br>
+					School of Population and Public Health<br>
+					University of British Columbia
+					</small>
+					</p>
+				</section>
+				<section>
+				<!-- Slide 1 -->
+					<h2>Assignment 4</h2>
+					<ul>
+						<li>Assignment 4: <a href="https://urbanbigdata.github.io/99-assignments/assignment-4/Assignment_4.html" target="_blank">link</a></li>
+						<li>Any issues? errors?</li>
+						<li>Very similar to our group session yesterday</li>
+						<li>Send your R code to my email</li>
+					</ul>					
+				</section>
+				<section data-background-image="images/statlearning.jpg" data-state="dimbg_dark">
+				<!-- Slide 2 -->
+				<div style="text-align:left; position:absolute; left:15%;">
+				<h1>Statistical Learning</h1>
+				</div>
+				</section>
+				<section data-background-image="images/statlearning.jpg" data-state="dimbg_darker">
+				<!-- Slide 3 -->	
+					<h2>What is statistical learning?</h2>
+					<ul>						
+						<li>A set of tools for <i>understanding</i> data</li>
+						<li>Based on probability and statistics</li>
+						<li><i><font color="DeepSkyBlue">Supervised</font> learning</i>: using inputs to estimate outputs</li>
+						<li><i><font color="DeepSkyBlue">Unsupervised</font> learning</i>: inputs but no outputs</li>
+						<li>Good for explanation</li>
+						<li>Linear regression, logistic regreassion, classification</li>
+					</ul>						
+				</section>
+				<section data-background-image="images/machinelearning.jpg" data-state="dimbg_darker">
+				<!-- Slide 4 -->	
+					<h2>What about machine learning?</h2>
+					<ul>						
+						<li>Algorithm-based models</li>
+						<li>Supervised and unsupervised learnings</li>
+						<li>Good for prediction</li>
+						<li>Random forest, supper vector machine (SVM), gradient boosting</li>
+					</ul>
+				</section>
+				<section>
+				<!-- Slide 5 -->	
+				<h2>Statistical Learning vs Machine Learning</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Statistical Learning</th>
+								<th>Machine Learning</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="width: 50%; vertical-align:top">
+									<ul>
+										<li>Hypotheses</li>
+										<li>Statistics and probability</li>
+										<li><font color="DeepSkyBlue">Best for explanation</font></li>
+										<li>Economics, medicine</li>
+									</ul>
+								</td>	
+								<td style="width: 50%; vertical-align:top"> 
+									<ul>
+										<li>No hypotheses</li>
+										<li>Algorithms and optimization</li>
+										<li><font color="DeepSkyBlue">Best for prediction</font></li>
+										<li>Engineering, computer science</li>
+									</ul>	
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>	
+				<section>
+				<!-- Slide 6 -->	
+				<h2>Simple regression</h2>
+				  <img src="images/regression1.png" width="700px" height="550px">
+
+				  <div class="fragment fade-in" data-fragment-index="1" width="700px" height="200px" style="position:absolute;bottom:0;right:0;margin-bottom:150px;background-color:lightgrey;color:black;padding:10px;opacity: 0.8;">
+						  $$ x = income, y = lifeExp $$
+					</div>
+		
+				</section>
+				<section>
+				<!-- Slide 7 -->	
+				<h2>Regression Line</h2>
+				<img src="images/regression2.png" width="700px" height="550px">
+				
+			  <div class="fragment fade-in" data-fragment-index="0" width="700px" height="200px" style="position:absolute;bottom:0;right:0;margin-bottom:450px;background-color:lightgrey;color:black;padding:10px;opacity: 0.8;">
+				  <i>Life expectancy as a function of income</i>	
+			  </div>
+				  
+			  <div class="fragment fade-in" data-fragment-index="1" width="700px" height="200px" style="position:absolute;bottom:0;right:0;margin-bottom:200px;background-color:lightgrey;color:black;padding:10px;opacity: 0.8;">
+				  $$ lifeExp \approx f(income) $$
+			  </div>
+
+			  <div class="fragment fade-in" data-fragment-index="2" width="700px" height="200px" style="position:absolute;bottom:0;right:0;margin-bottom:100px;background-color:lightgrey;color:black;padding:10px;opacity: 0.8;">
+				  $$ lifeExp = \beta_1 * income + \varepsilon $$
+			  </div>
+				
+				</section>
+				<section>
+				<!-- Slide 8 -->	
+				<h2>Regression explained</h2>
+				
+				<div style="position:relative; width:800px; height:600px; margin:0 auto;">
+				  <img src="images/regression1.png" style="position:absolute;center:0;left:5%;" />
+				  <img class="fragment fade-in" data-fragment-index="2" src="images/regression3.png" style="position:absolute;center:0;left:5%;" />
+				  <img class="fragment fade-in" data-fragment-index="3" src="images/regression4.png" style="position:absolute;center:0;left:5%;" />
+				  <img class="fragment fade-in" data-fragment-index="4" src="images/regression5.png" style="position:absolute;center:0;left:5%;" />
+				  <img class="fragment fade-in" data-fragment-index="5" src="images/regression6.png" style="position:absolute;center:0;left:5%;" />
+				</div>
+				
+				</section>
+				<section>
+				<!-- Slide 9 -->	
+				<h2>Ordinary Least Squares</h2>
+				<small><a href="http://students.brown.edu/seeing-theory/regression-analysis/index.html#section1" target="_blank">Visual explanation</a></small>
+				<img src="images/ols.png">				 
+
+				</section>
+				<section>
+				<!-- Slide 10 -->	
+				<h2>Multiple regression</h2>
+				<div style="background-color:lightgrey;color:black;padding:10px;opacity: 0.8;">$$ lifeExp \approx f(income, population) $$</div>
+				</section>
+				
+				<section>
+				<!-- Slide 11 -->	
+				<h2>Multiple regression</h2>
+				<div style="position:relative; width:800px; height:600px; margin:0 auto;">
+				  <img src="images/multiregression1.png" style="position:absolute;center:0;left:20%;" />
+				  <img class="fragment fade-in" data-fragment-index="1" src="images/multiregression2.png" style="position:absolute;center:0;left:20%;" />
+				  <img class="fragment fade-in" data-fragment-index="2" src="images/multiregression3.png" style="position:absolute;center:0;left:10%;" />
+				  <a class="fragment fade-in" data-fragment-index="2" href=images/multiregression3.html target="_blank">Interactive regression plot</a>
+				</div>
+				</section>
+				
+				<section>
+				<!-- Slide 12 -->	
+				<h2>Regression Demo</h2>
+				<a href="https://urbanbigdata.github.io/08-lecture-data_visualization/group-session/GroupSession_08.html" target="_blank">Group session 8</a>
+				
+				</section>
+				
+				<section>
+				<!-- Slide 13 -->	
+				<h2>Simple Regression Demo</h2>
+					
+					<pre><code data-trim data-noescape>
+					# Simple regression
+					m1 = lm(data = gapminder, lifeExp ~ income)
+					summary(m1)
+					
+					# Call:
+					#   lm(formula = lifeExp ~ income, data = gapminder)
+					# 
+					# Residuals:
+					#   Min      1Q  Median      3Q     Max 
+					# -18.032  -3.948   1.314   4.217   9.300 
+					# 
+					# Coefficients:
+					#   Estimate  Std. Error t value            Pr(>|t|)    
+					# (Intercept) 67.70194625  0.54603278  123.99 <0.0000000000000002 ***
+					#   income       0.00025963  0.00002118   12.26 <0.0000000000000002 ***
+					#   ---
+					#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+					# 
+					# Residual standard error: 5.522 on 185 degrees of freedom
+					# Multiple R-squared:  0.4482,	Adjusted R-squared:  0.4452 
+					# F-statistic: 150.3 on 1 and 185 DF,  p-value: < 0.00000000000000022
+					
+					</code></pre>
+					
+				</section>
+				
+				<section>
+				<!-- Slide 14 -->	
+				<h2>Multiple Regression demo</h2>
+				<pre><code data-trim data-noescape>
+				# Multiple regression
+				m2 = lm(data = gapminder, lifeExp ~ income + population)
+				summary(m2)
+				
+				# Call:
+				#   lm(formula = lifeExp ~ income + population, data = gapminder)
+				# 
+				# Residuals:
+				#   Min      1Q  Median      3Q     Max 
+				# -17.939  -3.903   1.410   4.129   9.379 
+				# 
+				# Coefficients:
+				#   Estimate      Std. Error t value            Pr(>|t|)    
+				# (Intercept) 67.602268543445  0.560501264567 120.610 <0.0000000000000002 ***
+				#   income       0.000260247911  0.000021214915  12.267 <0.0000000000000002 ***
+				#   population   0.000000002244  0.000000002797   0.802               0.423    
+				# ---
+				#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+				# 
+				# Residual standard error: 5.528 on 184 degrees of freedom
+				# Multiple R-squared:  0.4501,	Adjusted R-squared:  0.4441 
+				# F-statistic: 75.31 on 2 and 184 DF,  p-value: < 0.00000000000000022
+				
+				
+				</code></pre>
+				
+				</section>
+				
+				<section>
+				<!-- Slide 15 -->	
+				<h2>Group Project Part 4</h2>
+				<a href="https://urbanbigdata.github.io/98-group-project/GroupProject_part4.html", target="_blank">Instruction</a>
+
+				</section>
+				<section>
+				<!-- Slide 16 -->	
+					<h3>Any questions?</h3>
+					For all the course materials, go to <a href="https://urbanbigdata.github.io/" target="_blank">urbanbigdata.github.io</a>
+				</section>
+					
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber : true,
+				//previewLinks: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				
+				chalkboard: { 
+					// optionally load pre-recorded chalkboard drawing from file
+					//src: "chalkboard.json",
+					color: [ 'rgba(0,0,255,1)', 'rgba(255,255,255,0.5)' ],
+					background: [ 'rgba(127,127,127,.1)' , 'reveal.js-plugins/chalkboard/img/blackboard.png' ]
+					
+				},
+				
+				math: {
+					mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+					config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+				},
+				  
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/chalkboard/chalkboard.js' },
+					{ src: 'plugin/math/math.js', async: true }
+				],
+				
+				keyboard: {
+				    67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'c' is pressed
+				    66: function() { RevealChalkboard.toggleChalkboard() },	// toggle chalkboard when 'b' is pressed
+				    46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+				     8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+				    68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+				}
+			});
+		</script>
+	</body>
+</html>
